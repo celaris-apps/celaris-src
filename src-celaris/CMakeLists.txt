@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(example LANGUAGES CXX)
+project(celaris LANGUAGES CXX)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
@@ -13,6 +13,6 @@ FetchContent_Declare(
     GIT_TAG master)
 FetchContent_MakeAvailable(webview)
 
-add_executable(example WIN32)
-target_sources(example PRIVATE main.cpp)
-target_link_libraries(example PRIVATE webview::headers)
+add_executable(celaris WIN32)
+target_sources(celaris PRIVATE main.cpp)
+target_link_libraries(celaris PRIVATE webview::headers)

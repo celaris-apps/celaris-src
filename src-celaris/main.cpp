@@ -13,9 +13,9 @@ int main()
     try
     {
         webview::webview w(false, nullptr);
-        w.set_title("Basic Example");
+        w.set_title("Celaris");
         w.set_size(800, 600, WEBVIEW_HINT_NONE);
-        w.navigate("http://localhost:8080");
+        w.navigate("http://localhost:7832");
         w.run();
     }
     catch (const webview::exception &e)

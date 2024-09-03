@@ -4,6 +4,6 @@ set(CMAKE_BUILD_DIR "./src-celaris/build")
 
 message(STATUS "Celaris build system initialized.")
 
-add_subdirectory(src-cpp)
+add_subdirectory(src-celaris)
 
 message(STATUS "\n|===================================|\n\n    Celaris build complete. \n\n|===================================|")
