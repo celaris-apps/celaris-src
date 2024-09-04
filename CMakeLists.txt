@@ -9,4 +9,10 @@ install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/src-celaris/config.ini" DESTINATION "
 
 add_subdirectory(src-celaris)
 
+foreach(config IN ITEMS Debug Release RelWithDebInfo MinSizeRel)
+    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/src-celaris/config.ini"
+                   "${CMAKE_BINARY_DIR}/bin/${config}/config.ini"
+                   COPYONLY)
+endforeach()
+
 message(STATUS "\n|===================================|\n\n    Celaris build complete. \n\n|===================================|")
