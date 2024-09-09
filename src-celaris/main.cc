@@ -1,20 +1,18 @@
+
 #include "webview/webview.h"
 
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <string>
-#include <map>
-#include <filesystem>
 #include "includes/trim.h"
 #include "includes/process_path.h"
+#include "includes/bindings.h"
 
 namespace fs = std::filesystem;
 
 std::map<std::string, std::string> parseINI(const std::string &filepath, std::map<std::string, std::string> &config)
 {
     // std::cout << "Parsing INI file: " << filepath << std::endl;
-
     std::ifstream file(filepath);
     if (!file)
     {
@@ -72,8 +70,6 @@ int WINAPI WinMain(HINSTANCE /*hInst*/, HINSTANCE /*hPrevInst*/,
 int main()
 {
 #endif
-    // std::cout << "Current Path: " << std::filesystem::current_path() << std::endl;
-    // std::cout << "Executable Path: " << get_executable_path() << std::endl;
     std::map<std::string, std::string> config;
     parseINI(get_executable_path().string() + "/config.ini", config);
     if (!checkConfig(config))
@@ -85,20 +81,18 @@ int main()
         w.run();
         return 1;
     }
-    try
-    {
-        webview::webview w(false, nullptr);
-        w.set_title(config["title"]);
 
-        w.set_size(std::stoi(config["width"]), std::stoi(config["height"]), WEBVIEW_HINT_NONE);
-        w.navigate(config["url"]);
-        w.run();
-    }
-    catch (const webview::exception &e)
-    {
-        std::cerr << e.what() << std::endl;
-        return 1;
-    }
+    webview::webview w(true, nullptr);
+    w.set_title(config["title"]);
+    setBindings(w);
+    w.bind("count", [&](const std::string &req) -> std::string
+           {
+      // Imagine that req is properly parsed or use your own JSON parser.
+      auto direction = std::stol(req.substr(1, req.size() - 1));
+      return ""; });
+    w.set_size(std::stoi(config["width"]), std::stoi(config["height"]), WEBVIEW_HINT_NONE);
+    w.navigate(config["url"]);
+    w.run();
 
     return 0;
 }

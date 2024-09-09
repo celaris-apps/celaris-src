@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(celaris LANGUAGES CXX)
-set(CMAKE_CXX_STANDARD 17)
+
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
@@ -17,8 +16,8 @@ FetchContent_MakeAvailable(webview)
 
 
 add_executable(celaris WIN32)
-# add_executable(celaris main.cpp)
-target_sources(celaris PRIVATE main.cpp)
+# add_executable(celaris main.cc)
+target_sources(celaris PRIVATE main.cc bindings.cc )
 
 
 
