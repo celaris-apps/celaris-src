@@ -23,11 +23,11 @@ void setBindings(webview::webview &w)
                 auto jsonreq = json::parse(req);
                 if(jsonreq.size() != 1)
                 {
-                    response["response"] = "Invalid request";
+                    response["message"] = "Invalid request";
                 }
                 else
                 {
-                    response["response"] = "Hello " + jsonreq[0].get<std::string>() + ", You have been greeted from C++";
+                    response["message"] = "Hello " + jsonreq[0].get<std::string>() + ", You have been greeted from C++";
                 }
                 return response.dump(); });
 }
