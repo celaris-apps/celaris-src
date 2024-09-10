@@ -2,10 +2,6 @@ cmake_minimum_required(VERSION 3.16)
 project(celaris LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 
-include(FetchContent)
-include(CPack)
-
-include(FetchContent)
 FetchContent_Declare(
   googletest
   URL https://github.com/google/googletest/archive/refs/tags/release-1.11.0.tar.gz
