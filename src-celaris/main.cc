@@ -8,6 +8,9 @@
 #include "includes/process_path.h"
 #include "includes/bindings.h"
 
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
+
 namespace fs = std::filesystem;
 
 std::map<std::string, std::string> parseINI(const std::string &filepath, std::map<std::string, std::string> &config)

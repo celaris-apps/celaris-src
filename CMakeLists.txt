@@ -5,6 +5,10 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_BUILD_DIR "./src-celaris/build")
 set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}")
 
+enable_testing()
+
+message(STATUS "CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
+
 message(STATUS "Celaris build system initialized.")
 
 install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/src-celaris/config.ini" DESTINATION "bin/$<CONFIG>")
@@ -17,4 +21,3 @@ foreach(config IN ITEMS Debug Release RelWithDebInfo MinSizeRel)
                    COPYONLY)
 endforeach()
 
-message(STATUS "\n|===================================|\n\n    Celaris build complete. \n\n|===================================|")

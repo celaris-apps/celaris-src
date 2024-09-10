@@ -1,10 +1,14 @@
-// filename: webview-custom.d.ts
+/**
+ * Extend the global Window interface with custom bindings
+ *
+ * This provides TypeScript with the necessary type information to allow
+ * the use of custom bindings in the global Window object.
+ */
 
-// Extend the global Window interface with custom properties
 declare global {
   interface Window {
-    // Define the function signature for 'count'
     count(direction: number): Promise<string>
+    greet(name: string): Promise<string>
   }
 }
 
