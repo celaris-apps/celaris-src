@@ -18,7 +18,7 @@ include(CPack)
 FetchContent_Declare(
     webview
     GIT_REPOSITORY https://github.com/webview/webview
-    GIT_TAG master)
+    GIT_TAG 6f281d56eb0d6e0433c27453f282f12a7404da4d)
 FetchContent_MakeAvailable(webview)
 
 
