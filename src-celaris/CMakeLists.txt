@@ -38,8 +38,7 @@ add_executable(celaris WIN32)
 target_sources(celaris PRIVATE main.cc bindings.cc ${SHARED_SOURCES})
 
 
-
-target_link_libraries(celaris PRIVATE webview::headers)
+target_link_libraries(celaris PRIVATE webview::core)
 target_link_libraries(celaris PRIVATE nlohmann_json::nlohmann_json)
 
 
