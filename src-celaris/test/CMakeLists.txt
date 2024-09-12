@@ -13,6 +13,7 @@ FetchContent_MakeAvailable(googletest)
 add_executable(tests test.cc)
 target_link_libraries(tests GTest::gtest_main)
 target_link_libraries(tests nlohmann_json::nlohmann_json)
+target_link_libraries(tests webview::core)
 
 include(GoogleTest)
 gtest_discover_tests(tests)

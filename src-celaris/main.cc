@@ -80,7 +80,7 @@ int main()
         webview::webview w(false, nullptr);
         w.set_title("Error");
         w.set_size(600, 100, WEBVIEW_HINT_NONE);
-        w.set_html("<h3>Error: Invalid Config</h3><p>Visit <a target='_blank' rel='noopener noreferrer' href='https://docs.celaris.io/cpp-config'>https://docs.celaris.io/cpp-config</a> for more information.</p>");
+        w.set_html("<h3>Error: Invalid Config</h3><p>Visit <a target='_blank' rel='noopener noreferrer' href='https://docs.celaris.cc/guides/cpp-config'>https://docs.celaris.cc/guides/cpp-config</a> for more information.</p>");
         w.run();
         return 1;
     }
@@ -88,6 +88,7 @@ int main()
     webview::webview w(true, nullptr);
     w.set_title(config["title"]);
     setBindings(w);
+
     w.bind("count", [&](const std::string &req) -> std::string
            {
       // Imagine that req is properly parsed or use your own JSON parser.

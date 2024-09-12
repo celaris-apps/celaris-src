@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
+#include <webview/webview.h>
 
 TEST(JsonTest, BasicStringify)
 {
@@ -32,3 +33,12 @@ TEST(JsonTest, MixedArrayTest)
     int i = j[2].get<std::int64_t>();
     EXPECT_EQ(i, 265);
 }
+
+// TEST(WebViewTest, Basic)
+// {
+//     webview::webview w(true, nullptr);
+//     w.set_title("Error");
+//     w.set_size(600, 100, WEBVIEW_HINT_NONE);
+//     w.set_html("<h3>Error: Invalid Config</h3><p>Visit <a target='_blank' rel='noopener noreferrer' href='https://docs.celaris.io/cpp-config'>https://docs.celaris.io/cpp-config</a> for more information.</p>");
+//     w.run();
+// }
