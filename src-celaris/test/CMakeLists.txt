@@ -2,11 +2,16 @@ cmake_minimum_required(VERSION 3.16)
 project(celaris LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 
+# FetchContent_Declare(
+#   googletest
+#   URL https://github.com/google/googletest/archive/refs/tags/release-1.11.0.tar.gz
+#   DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+# )
+
 FetchContent_Declare(
   googletest
-  URL https://github.com/google/googletest/archive/refs/tags/release-1.11.0.tar.gz
-  DOWNLOAD_EXTRACT_TIMESTAMP TRUE
-)
+  GIT_REPOSITORY https://github.com/google/googletest
+  GIT_TAG v1.15.2)
 FetchContent_MakeAvailable(googletest)
 
 

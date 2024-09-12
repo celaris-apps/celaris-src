@@ -15,18 +15,29 @@ include(CPack)
 
 # ========= Fetch Libraries ========= #
 
+
+message(STATUS "Fetching libraries...")
+
+message(STATUS "Fetching webview...")
+
 FetchContent_Declare(
     webview
     GIT_REPOSITORY https://github.com/webview/webview
     GIT_TAG 0.12.0)
 FetchContent_MakeAvailable(webview)
 
+message(STATUS "Fetching nlohmann_json...")
 
 FetchContent_Declare(
-  json
-  URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz
-  DOWNLOAD_EXTRACT_TIMESTAMP TRUE
-)
+    json
+    GIT_REPOSITORY https://github.com/nlohmann/json
+    GIT_TAG v3.11.3)
+
+# FetchContent_Declare(
+#   json
+#   URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz
+#   DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+# )
 
 FetchContent_MakeAvailable(json)
 
