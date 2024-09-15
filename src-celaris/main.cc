@@ -96,6 +96,24 @@ int main()
       return ""; });
     w.set_size(std::stoi(config["width"]), std::stoi(config["height"]), WEBVIEW_HINT_NONE);
     w.navigate(config["url"]);
+
+    // Leave this here as an example of how to send code from C++ to JS
+    // TODO: separate this all out to create a proper event system.
+    //  do something every 5 seconds in the background
+    std::thread t([&w]()
+                  {
+        while (true)
+        {
+            std::vector<std::string> names = {"Alice", "Bob", "Charlie", "David", "Eve"};
+            std::this_thread::sleep_for(std::chrono::seconds {5});
+            w.dispatch([&w]()
+            {
+                std::string js_code = "console.log('Hello from C++');";
+                std::cout << "Executing: " << js_code << std::endl;
+                w.eval(js_code.c_str());
+            });
+        } });
+
     w.run();
 
     return 0;
