@@ -33,20 +33,14 @@ FetchContent_Declare(
     GIT_REPOSITORY https://github.com/nlohmann/json
     GIT_TAG v3.11.3)
 
-# FetchContent_Declare(
-#   json
-#   URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz
-#   DOWNLOAD_EXTRACT_TIMESTAMP TRUE
-# )
-
 FetchContent_MakeAvailable(json)
 
 
 # ========= Executable ========= #
 
 add_executable(celaris WIN32)
-# add_executable(celaris main.cc bindings.cc)
-target_sources(celaris PRIVATE main.cc bindings.cc ${SHARED_SOURCES})
+# add_executable(celaris main.cc celaris.cc)
+target_sources(celaris PRIVATE main.cc celaris.cc ${SHARED_SOURCES})
 
 
 target_link_libraries(celaris PRIVATE webview::core)

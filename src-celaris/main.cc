@@ -1,69 +1,9 @@
-
-#include <webview/webview.h>
+#include "includes/celaris.h"
 
 #include <iostream>
-#include <fstream>
-#include <sstream>
-#include "includes/trim.h"
-#include "includes/process_path.h"
-#include "includes/bindings.h"
 
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
-
-namespace fs = std::filesystem;
-
-std::map<std::string, std::string> parseINI(const std::string &filepath, std::map<std::string, std::string> &config)
-{
-    // std::cout << "Parsing INI file: " << filepath << std::endl;
-    std::ifstream file(filepath);
-    if (!file)
-    {
-        std::cerr << "Failed to open config.ini" << std::endl;
-        return config;
-    }
-    std::string line, key, value;
-
-    while (std::getline(file, line))
-    {
-        std::istringstream is_line(line);
-        if (std::getline(is_line, key, '=') && std::getline(is_line, value))
-        {
-            config[trim(key)] = trim(value);
-        }
-    }
-    return config;
-}
-
-bool checkConfig(const std::map<std::string, std::string> &config)
-{
-    if (config.empty())
-    {
-        std::cerr << "Config file is empty" << std::endl;
-        return false;
-    }
-    if (config.find("title") == config.end())
-    {
-        std::cerr << "Config file does not contain a title" << std::endl;
-        return false;
-    }
-    if (config.find("width") == config.end())
-    {
-        std::cerr << "Config file does not contain a width" << std::endl;
-        return false;
-    }
-    if (config.find("height") == config.end())
-    {
-        std::cerr << "Config file does not contain a height" << std::endl;
-        return false;
-    }
-    if (config.find("url") == config.end())
-    {
-        std::cerr << "Config file does not contain a url" << std::endl;
-        return false;
-    }
-    return true;
-}
 
 #ifdef _WIN32
 int WINAPI WinMain(HINSTANCE /*hInst*/, HINSTANCE /*hPrevInst*/,
@@ -73,48 +13,58 @@ int WINAPI WinMain(HINSTANCE /*hInst*/, HINSTANCE /*hPrevInst*/,
 int main()
 {
 #endif
-    std::map<std::string, std::string> config;
-    parseINI(get_executable_path().string() + "/config.ini", config);
-    if (!checkConfig(config))
-    {
-        webview::webview w(false, nullptr);
-        w.set_title("Error");
-        w.set_size(600, 100, WEBVIEW_HINT_NONE);
-        w.set_html("<h3>Error: Invalid Config</h3><p>Visit <a target='_blank' rel='noopener noreferrer' href='https://docs.celaris.cc/guides/cpp-config'>https://docs.celaris.cc/guides/cpp-config</a> for more information.</p>");
-        w.run();
-        return 1;
-    }
 
-    webview::webview w(true, nullptr);
-    w.set_title(config["title"]);
-    setBindings(w);
+    Celaris c = Celaris();
 
-    w.bind("count", [&](const std::string &req) -> std::string
+    // Example of a binding that hooks the frontend greet function
+    c.bind("greet", [&](const std::string &req) -> std::string
            {
-      // Imagine that req is properly parsed or use your own JSON parser.
-      auto direction = std::stol(req.substr(1, req.size() - 1));
-      return ""; });
-    w.set_size(std::stoi(config["width"]), std::stoi(config["height"]), WEBVIEW_HINT_NONE);
-    w.navigate(config["url"]);
+               json response;
+               auto jsonreq = json::parse(req);
+               if (jsonreq.size() != 1)
+               {
+                   response["message"] = "Invalid request";
+               }
+               else
+               {
+                   response["message"] = "Hello " + jsonreq[0].get<std::string>() + ", You have been greeted from C++";
+               }
+               return response.dump(); });
 
-    // Leave this here as an example of how to send code from C++ to JS
-    // TODO: separate this all out to create a proper event system.
-    //  do something every 5 seconds in the background
-    std::thread t([&w]()
-                  {
-        while (true)
-        {
-            std::vector<std::string> names = {"Alice", "Bob", "Charlie", "David", "Eve"};
-            std::this_thread::sleep_for(std::chrono::seconds {5});
-            w.dispatch([&w]()
-            {
-                std::string js_code = "console.log('Hello from C++');";
-                std::cout << "Executing: " << js_code << std::endl;
-                w.eval(js_code.c_str());
-            });
-        } });
+    // Example of scheduled task that posts a string message after 5 seconds
+    c.scheduleTask([&c]()
+                   {
+                       std::cout << "Posting message after 5 seconds" << std::endl;
+                       std::vector<std::string> names = {"Alice", "Bob", "Charlie", "David", "Eve"};
+                       std::this_thread::sleep_for(std::chrono::seconds{5});
+                       c.postMessage("This is an automated message from C++"); });
 
-    w.run();
+    // Example of a scheduled task that posts a JSON object after 10 seconds
+    c.scheduleTask([&c]()
+                   {
+                       std::cout << "Posting JSON after 10 seconds" << std::endl;
+                       std::vector<std::string> names = {"Alice", "Bob", "Charlie", "David", "Eve"};
+                       std::this_thread::sleep_for(std::chrono::seconds{10});
+                       c.postJson(names); });
 
+    // Example of a scheduled task that posts a JSON object every 15 seconds
+    c.scheduleTask([&c]()
+                   {
+                    //    std::cout << "Posting JSON every 15 seconds" << std::endl;
+                    int count = 0;
+                    while(true)
+                    {
+                       json j = {
+                           {"origin", "cpp"},
+                           {"data", count++},
+                           {"type", "count"},
+                           {"timestamp", std::chrono::system_clock::now().time_since_epoch().count()},
+                           {"message", "This is an automated message from C++"}
+                       };
+                       std::this_thread::sleep_for(std::chrono::seconds{2});
+                       c.postJson(j); 
+                   } });
+
+    c.run();
     return 0;
 }
