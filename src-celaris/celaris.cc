@@ -75,6 +75,19 @@ Celaris::Celaris() : w(true, nullptr)
 
 Celaris::~Celaris()
 {
+    // Signal the background thread to stop
+    {
+        std::lock_guard<std::mutex> lock(queueMutex);
+        stopBackgroundThread = true;
+    }
+    // Notify the condition variable to unblock the thread if it's waiting
+    queueCondVar.notify_all();
+
+    // Join the background thread if it's joinable
+    if (backgroundThread.joinable())
+    {
+        backgroundThread.join();
+    }
 }
 
 void Celaris::run()
