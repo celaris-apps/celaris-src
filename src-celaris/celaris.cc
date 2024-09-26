@@ -92,38 +92,9 @@ Celaris::~Celaris()
 
 void Celaris::run()
 {
-    // webview::webview w(true, nullptr);
     w.set_title(config["title"]);
-    // setBindings(w);
     w.set_size(std::stoi(config["width"]), std::stoi(config["height"]), WEBVIEW_HINT_NONE);
     w.navigate(config["url"]);
-
-    // Leave this here as an example of how to send code from C++ to JS
-    // TODO: separate this all out to create a proper event system.
-    //  do something every 5 seconds in the background
-    // std::thread t([this]()
-    //               {
-    //     while (true)
-    //     {
-
-    //         std::vector<std::string> names = {"Alice", "Bob", "Charlie", "David", "Eve"};
-    //         std::this_thread::sleep_for(std::chrono::seconds {5});
-    //         w.dispatch([this, &names]()
-    //         {
-    //             json j1 = names;
-    //             json j2 = {
-    //                 {"origin", "cpp"},
-    //                 {"data", j1},
-    //                 {"type", "names"},
-    //                 {"timestamp", std::chrono::system_clock::now().time_since_epoch().count()},
-    //                 {"message", "This is an automated message from C++"}
-    //             };
-    //             std::string js_code = "window.postMessage(" + j2.dump() + ");";
-    //             std::cout << "Executing: " << js_code << std::endl;
-    //             w.eval(js_code.c_str());
-    //         });
-    //     } });
-
     w.run();
 }
 
